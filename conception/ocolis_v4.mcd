@@ -1,9 +1,9 @@
 ADRESSE: référence interne, nom, adresse principale, complément, code postal, ville
 envoie, 0N ADRESSE, 11 COLIS
-COLIS: numéro interne, contenu, poids, largeur, hauteur, profondeur, valeur estimée, date prise en charge, date expedition, date livraison
+COLIS: numéro interne, contenu, poids, largeur, hauteur, profondeur, valeur estimée, date prise en charge, date livraison
 
 :
 reçoit, 0N ADRESSE, 11 COLIS
 :
-transmet, 11 EXPEDITION, 01 COLIS
-EXPEDITION: numéro_expedition, driver_name, vehicle_plate, starting_time, ending_time
+transmet, 1N EXPEDITION, 01 COLIS
+EXPEDITION: ref_expedition, driver_name, vehicle_plate, starting_time, ending_time

@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP TABLE package, place, expedition; -- toujours supprimer les tables qui ont des clés étrangère en premier
+DROP TABLE package, place; -- toujours supprimer les tables qui ont des clés étrangère en premier
 
 COMMIT;

@@ -51,12 +51,4 @@ ALTER TABLE package
     ADD COLUMN expedition_time TIMESTAMPTZ,
     ADD COLUMN delivered_time TIMESTAMPTZ;
 
-CREATE TABLE expedition
-    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    driver_name TEXT NOT NULL,
-    vehicle_plate INT NOT NULL,
-    starting_time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    ending_time TIMESTAMP,
-    package_id int REFERENCES package(id);
-
 COMMIT;
