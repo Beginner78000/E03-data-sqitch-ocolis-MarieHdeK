@@ -2,8 +2,6 @@
 
 BEGIN;
 
-SELECT vehicle_plate FROM expedition WHERE false;
 
-SELECT postal_code FROM place WHERE false;
 
 ROLLBACK;

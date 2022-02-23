@@ -12,6 +12,6 @@ ALTER TABLE package
     ALTER COLUMN worth TYPE int;
 
 
-DROP DOMAIN postint;
+DROP DOMAIN posint;
 
 COMMIT;

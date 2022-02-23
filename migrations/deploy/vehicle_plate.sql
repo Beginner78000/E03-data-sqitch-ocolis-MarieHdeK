@@ -1,31 +1,48 @@
--- Deploy ocolis:vehicle_plate to pg
+-- -- Deploy ocolis:domains to pg
 
 BEGIN;
 
--- CREATE DOMAIN nom [AS] type_donnee
---     [ COLLATE collation ]
---     [ DEFAULT expression ]
---     [ contrainte [ ... ] ]
+-- vehicule_plate
 
--- où contrainte est :
-
--- [ CONSTRAINT nom_contrainte ]
--- { NOT NULL | NULL | CHECK (expression) }
-
-CREATE DOMAIN immat AS TEXT NOT NULL
+CREATE DOMAIN plate AS TEXT
 CHECK(
-    VALUE ~ '^[A-Z]{1,2}-[0-9]{1,3}-[A-Z]{1,2}$)';
+    -- plaque d'immatriculation moderne et française
+    -- lettres à proscrire : I O U et les combinaisons WW et SS
+    -- pour les chiffres, la seule combinaison interdite est 000
+    VALUE ~ '^inconnu$|^(?!WW|SS)[A-HJ-NP-TV-Z]{2}-(?!000)\d{3}-[A-HJ-NP-TV-Z]{2}(?<!SS)$'
+);
 
 ALTER TABLE expedition
-    ALTER COLUMN vehicle_plate TYPE immat;
+    ALTER COLUMN vehicle_plate TYPE plate;
 
--- code postale
-CREATE DOMAIN zip_code AS INT NOT NULL
+
+CREATE DOMAIN code_postal AS TEXT
 CHECK(
-   VALUE ~ '^((0[1-9])|([1-8][0-9])|(9[0-8])|(2A)|(2B))[0-9]{3}$'
-); 
+-- règle complète : (58180|34280|20600|20620)|^(?!00|96|99)(?!20[45789])\d{5}(?<![12]80)$
+
+-- codes postaux très particuliers
+VALUE ~ '^(58180|34280|20600|20620|20300)$'
+OR
+(
+    -- règle générale
+    VALUE ~ '^(?!00|96|99)\d{5}$'
+
+    -- exceptions générales
+    AND
+    VALUE ~ '^\d{5}(?<![12]80)$'
+
+
+    -- on ajoute la corse
+    AND
+    VALUE ~ '^(?!20[3-9])\d{5}$'
+
+    -- on pourrait ajouter la Bretagne, les DOM, ...
+)
+);
 
 ALTER TABLE place
-    ALTER COLUMN postal_code TYPE zip_code;
+    ALTER COLUMN postal_code TYPE code_postal;
 
 COMMIT;
+
+
